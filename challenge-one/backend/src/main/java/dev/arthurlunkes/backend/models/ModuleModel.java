@@ -9,12 +9,12 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "client")
+@Table(name = "module")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientModel {
+public class ModuleModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
