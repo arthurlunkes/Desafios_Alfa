@@ -60,7 +60,7 @@ const TableTickets = ({tickets, onVisualize, onClean, onEdit, onDelete}) => {
       <table className='table table-bordered table-hover table-striped'>
         <thead>
           <tr>
-            <th>ID do Ticket</th>
+            <th>ID</th>
             <th>Título</th>
             <th>Cliente</th>
             <th>Data de Abertura</th>

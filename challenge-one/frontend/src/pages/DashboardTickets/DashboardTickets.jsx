@@ -58,7 +58,6 @@ const DashboardTickets = () => {
         return { contadorPorCliente, contadorPorModulo };
     }
 
-    // melhorar essa função
     function saveTicket(ticket) {
         setIsOpenModal(false);
 
@@ -85,7 +84,6 @@ const DashboardTickets = () => {
         }
     }
 
-    // melhorar essa função
     function closeModal() {
         setIsOpenModal(false);
         setTicket({});
