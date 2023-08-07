@@ -25,6 +25,7 @@ Desafio 2: Criar uma API para consumir outra API de buscar receitas pelo nome do
 <a href="#informacoes"><li>Informações adicionais</li></a>
 <a href="#passos"><li>Passos para rodar esse projeto</li></a>
 <a href="#consideracoes"><li>Considerações finais</li></a>
+<a href="#melhorias"><li>Possíveis Melhorias</li></a>
 </ol>
 
 <div id="backend-desafio1">
@@ -118,7 +119,9 @@ O Backend do sistema foi desenvolvido utilizando a linguagem Java juntamente com
 
 O desenvolvimento dos desafios utilizando Java com Spring Boot e React foi concluído com sucesso, com todos os requisitos funcionando corretamente. Foi feito o tratamento dos erros no desafio 2, com os códigos HTTP apropriados, visto que a API original não tinha esses tratamentos.
 
-## Possíveis Melhorias
+<div id="melhorias">
+<h2>Possíveis Melhorias</h2>
+</div>
 
 - Incluir testes automatizados para garantir a qualidade e a robustez do código.
 - Expandir as funcionalidades dos desafios ou criar novos desafios para praticar ainda mais as habilidades em programação.
