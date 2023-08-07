@@ -137,7 +137,7 @@ const DashboardTickets = () => {
                     isOpen={isOpenModal}
                     onClose={closeModal}
                     >
-                    <h2 className='text-center'>Criar chamado</h2>
+                    <h2 className='text-center'>{ticket.id?'Editar':'Novo'} chamado</h2>
                     <div className="form">
                         <div className="row">
                             <div className="col">
@@ -259,7 +259,7 @@ const DashboardTickets = () => {
                 Componente abaixo é utilizado para exibir um formulário para criar um novo chamado 
             */}
             <div className='create-ticket'>
-                <button className='btn btn-primary' onClick={() => setIsOpenModal(true)}>Criar Chamado</button>
+                <button className='btn btn-primary' onClick={() => setIsOpenModal(true)}>Novo Chamado</button>
                 {renderModal()}
             </div>
 
