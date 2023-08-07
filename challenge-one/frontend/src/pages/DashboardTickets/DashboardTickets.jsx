@@ -5,13 +5,12 @@ import TableTickets from '../../components/TableTickets/TableTickets'
 import Modal from '../../components/Modal/Modal'
 import { getClients, getModules, getTickets, createTicket, updateTicket, deleteTicket } from '../../services/AxiosService'
 
-export default function DashboardTickets() {
+const DashboardTickets = () => {
 
     const [clients, setClients] = useState([])
     const [modules, setModules] = useState([])
     const [tickets, setTickets] = useState([])
     const [ticket, setTicket] = useState({})
-    const [filter, setFilter] = useState({})
     const [isOpenModal, setIsOpenModal] = useState(false)
     const [ticketsByClient, setTicketsByClient] = useState({});
     const [ticketsByModule, setTicketsByModule] = useState({});
@@ -62,20 +61,32 @@ export default function DashboardTickets() {
     // melhorar essa função
     function saveTicket(ticket) {
         setIsOpenModal(false);
-        createTicket(ticket)
-            .then(res => {
-                setTicket({});
-                closeModal();
-            })
-            .catch(err => {
-                console.log(err)
-                closeModal();
-            })
+
+        if (ticket.id) {
+            updateTicket(ticket)
+                .then(res => {
+                    setTicket({});
+                    closeModal();
+                })
+                .catch(err => {
+                    console.log(err)
+                    closeModal();
+                })
+        } else {
+            createTicket(ticket)
+                .then(res => {
+                    setTicket({});
+                    closeModal();
+                })
+                .catch(err => {
+                    console.log(err)
+                    closeModal();
+                })
+        }
     }
 
     // melhorar essa função
     function closeModal() {
-        console.log(ticket);
         setIsOpenModal(false);
         setTicket({});
     }
@@ -99,6 +110,138 @@ export default function DashboardTickets() {
             })
     }
 
+    function onVisualize(month, year) {
+        getTickets(month, year)
+            .then(res => {
+                setTickets(res.data.tickets);
+                const { contadorPorCliente, contadorPorModulo } = contarTicketsPorClienteEModulo(res.data);
+                setTicketsByClient(contadorPorCliente);
+                setTicketsByModule(contadorPorModulo);
+            })
+            .catch(err => console.log(err))
+    }
+
+    function setClientInTicket(e) {
+        const client = clients.find(client => client.id === parseInt(e.target.value))
+        setTicket({ ...ticket, client: client })
+    }
+
+    function setModuleInTicket(e) {
+        let module = modules.find(module => module.id === parseInt(e.target.value))
+        setTicket({ ...ticket, module: module })
+    }
+
+    function renderModal() {
+        return (
+            <Modal
+                    isOpen={isOpenModal}
+                    onClose={closeModal}
+                    >
+                    <h2 className='text-center'>Criar chamado</h2>
+                    <div className="form">
+                        <div className="row">
+                            <div className="col">
+                                <div className='form-group'>
+                                    <label className='form-label'>Título</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="title"
+                                        placeholder="Digite o título"
+                                        value={ticket.title}
+                                        onChange={(e) => setTicket({ ...ticket, title: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className='form-group'>
+                                    <label className='form-label'>Cliente</label>
+                                    <select 
+                                    className="form-select"
+                                    name="client" 
+                                    onChange={(e) => setClientInTicket(e)}
+                                    value={ticket.client}
+                                    >
+                                        <option value="">Selecione...</option>
+                                        {clients.map((client) => (
+                                            <option key={client.id} value={client.id} >
+                                                {client.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <div className='form-group'>
+                                    <label className='form-label'>Módulo</label>
+                                    <select 
+                                    className="form-select"
+                                    name="module"
+                                    onChange={(e) => setModuleInTicket(e)}
+                                    value={ticket.module}
+                                    >
+                                    <option value="">Selecione...</option>
+                                        {modules.map((module) => (
+                                            <option key={module.id} value={module.id}>
+                                                {module.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label className='form-label'>Data de Abertura</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        name="dateOpen"
+                                        value={ticket.dateOpen}
+                                        onChange={(e) => setTicket({ ...ticket, dateOpen: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12 col-md-6">
+                                <div className="form-group">
+                                    <label className='form-label'>Data de fechamento</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        name="dateClose"
+                                        value={ticket.dateClose}
+                                        onChange={(e) => setTicket({ ...ticket, dateClose: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div className="row">
+                            <div className="d-flex justify-content-center">
+                                <button className="btn btn-primary" onClick={() => saveTicket(ticket)}>
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+        )
+    }
+
+    function renderTable() {
+        return (
+            <TableTickets 
+            tickets={tickets} 
+            onVisualize={onVisualize}
+            onDelete={onDelete}
+            onEdit={onEdit}
+            />
+        )
+    }
+
     return (
         <div className="dashboard">
 
@@ -117,95 +260,7 @@ export default function DashboardTickets() {
             */}
             <div className='create-ticket'>
                 <button className='btn btn-primary' onClick={() => setIsOpenModal(true)}>Criar Chamado</button>
-                <Modal
-                    isOpen={isOpenModal}
-                    onClose={closeModal}
-                    onSave={saveTicket}>
-                    <h2 className='text-center'>Criar chamado</h2>
-                    <div className="form">
-                        <div className="text-center">
-                        </div>
-                        <div className="row">
-                            <div className="col-12 col-md-6">
-                                <div className="form-group">
-                                    <label>Título</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        name="title"
-                                        placeholder="Digite o título"
-                                        value={ticket.title}
-                                        onChange={(e) => setTicket({ ...ticket, title: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-6">
-                                <div className="form-group">
-                                    <label>Cliente</label>
-                                    <select name="client" 
-                                    onChange={(e) => setTicket({ ...ticket, client: e.target.value })}
-                                    value={ticket.client}
-                                    >
-                                        <option value="">Selecione...</option>
-                                        {clients.map((client) => (
-                                            <option key={client.id} value={client.id} >
-                                                {client.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-12 col-md-6">
-                                <div className="form-group">
-                                    <label>Módulo</label>
-                                    <select name="module" id="">
-                                        {modules.map((module) => (
-                                            <option key={module.id} value={module.id}>
-                                                {module.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-6">
-                                <div className="form-group">
-                                    <label>Data de Abertura</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        name="dateOpen"
-                                        value={ticket.dateOpen}
-                                        onChange={(e) => setTicket({ ...ticket, dateOpen: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-12 col-md-6">
-                                <div className="form-group">
-                                    <label>Data de fechamento</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        name="dateClose"
-                                        value={ticket.dateClose}
-                                        onChange={(e) => setTicket({ ...ticket, dateClose: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="row">
-                            <div className="col-12 d-flex justify-content-center">
-                                <button className="btn btn-primary" onClick={() => saveTicket(ticket)}>
-                                    Salvar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </Modal>
+                {renderModal()}
             </div>
 
 
@@ -213,13 +268,10 @@ export default function DashboardTickets() {
                 Componente abaixo é utilizado para exibir os chamados em uma tabela
             */}
             <div className="table-tickets">
-                <TableTickets 
-                tickets={tickets} 
-                onDelete={onDelete}
-                onEdit={onEdit}
-                />
+                {renderTable()}
             </div>
         </div>
     )
-
 }
+
+export default DashboardTickets;

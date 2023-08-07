@@ -1,8 +1,10 @@
 import './TableTickets.css';
-import React, { useState, useEffect } from 'react';
-import { months, years } from '../../helpers/DatesHelper';
+import React, { useState } from 'react';
+
 
 const TableTickets = ({tickets, onVisualize, onClean, onEdit, onDelete}) => {
+  const [month, setMonth] = useState(0);
+  const [year, setYear] = useState(0);
 
   const formatarData = (dataString) => {
     const [ano, mes, dia] = dataString.split('-');
@@ -13,8 +15,12 @@ const TableTickets = ({tickets, onVisualize, onClean, onEdit, onDelete}) => {
     <div>
       <div className='filters'>
         <div>
-          <label htmlFor="Month">Mês: </label>
-          <select id="Month">
+          <label htmlFor="Month" className='form-label'>Mês: </label>
+          <select 
+            id="Month"
+            onChange={(e) => setMonth(e.target.value)}
+            value={month}
+          >
             <option value="0">Selecionar</option>
             <option value="1">Janeiro</option>
             <option value="2">Fevereiro</option>
@@ -31,8 +37,12 @@ const TableTickets = ({tickets, onVisualize, onClean, onEdit, onDelete}) => {
           </select>
         </div>
         <div>
-          <label htmlFor="Year">Ano: </label>
-          <select id="Year">
+          <label htmlFor="Year" className='form-label'>Ano: </label>
+          <select 
+            id="Year"
+            onChange={(e) => setYear(e.target.value)}
+            value={year}
+          >
             <option value="0">Selecionar</option>
             <option value="2016">2016</option>
             <option value="2017">2017</option>
@@ -44,8 +54,8 @@ const TableTickets = ({tickets, onVisualize, onClean, onEdit, onDelete}) => {
             <option value="2023">2023</option>
           </select>
         </div>
-        <button className='btn btn-primary' onClick={onVisualize}>Visualizar</button>
-        <button className='btn btn-secondary' onClick={onClean}>Limpar filtros</button>
+        <button className='btn btn-primary' onClick={onVisualize(month, year)}>Visualizar</button>
+        <button className='btn btn-secondary' onClick={() => {setMonth(0); setYear(0)}}>Limpar filtros</button>
       </div>
       <table className='table table-bordered table-hover table-striped'>
         <thead>

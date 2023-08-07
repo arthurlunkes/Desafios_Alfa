@@ -1,7 +1,7 @@
 import './Modal.css'
 import React from "react"
 
-const Modal = ({ isOpen, onClose, onSave, children }) => {
+const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) {
     return null;
   }
