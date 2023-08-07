@@ -1,0 +1,52 @@
+.dashboard {
+    height: 100%;
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+header {
+    text-align: center;
+}
+
+.charts {
+    display: flex;
+    justify-content: center;
+    height: 250px;
+}
+
+.create-ticket {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+/* Estilos para o rótulo */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  /* Estilos para o seletor */
+  select {
+    font-size: 16px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none; /* Remove a borda quando selecionado */
+  }
+  
+  /* Estilos para as opções do seletor */
+  select option {
+    padding: 8px;
+  }
+  
+  /* Estilos para quando o seletor está em foco */
+  select:focus {
+    border-color: #4c8baf; /* Adicione uma cor de destaque quando estiver em foco */
+  }

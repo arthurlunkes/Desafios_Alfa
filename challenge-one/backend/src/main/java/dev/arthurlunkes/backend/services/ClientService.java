@@ -19,4 +19,7 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
+    public ClientModel findById(int i) {
+        return clientRepository.findById(i).get();
+    }
 }

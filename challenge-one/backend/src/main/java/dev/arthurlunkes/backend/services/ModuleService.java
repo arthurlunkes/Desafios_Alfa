@@ -19,4 +19,7 @@ public class ModuleService {
         return moduleRepository.findAll();
     }
 
+    public ModuleModel findById(int i) {
+        return moduleRepository.findById(i).get();
+    }
 }
