@@ -160,7 +160,7 @@ const DashboardTickets = () => {
                                     className="form-select"
                                     name="client" 
                                     onChange={(e) => setClientInTicket(e)}
-                                    value={ticket.client}
+                                    value={ticket.client ? ticket.client.id : ''}
                                     >
                                         <option value="">Selecione...</option>
                                         {clients.map((client) => (
@@ -180,7 +180,7 @@ const DashboardTickets = () => {
                                     className="form-select"
                                     name="module"
                                     onChange={(e) => setModuleInTicket(e)}
-                                    value={ticket.module}
+                                    value={ticket.module ? ticket.module.id : ''}
                                     >
                                     <option value="">Selecione...</option>
                                         {modules.map((module) => (
