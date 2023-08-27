@@ -24,7 +24,7 @@ public class TicketService {
     public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
-    public ResponseGetAllGroupyByClientAndModuleDTO findAllTickets() {
+    public List<TicketModel> findAllTickets() {
 
         List<TicketModel> tickets = ticketRepository.findAll();
         Map<String, List<TicketModel>> ticketsByClient = tickets.stream()
@@ -35,7 +35,7 @@ public class TicketService {
         ResponseGetAllGroupyByClientAndModuleDTO response = new ResponseGetAllGroupyByClientAndModuleDTO(tickets,
                 ticketsByClient, ticketsByModule);
 
-        return response;
+        return tickets;
     }
 
     public TicketModel findTicketById(Integer id) {
